@@ -20,6 +20,11 @@ func main() {
 		fmt.Fprintf(w, "Response from backend running on port %s\n", port)
 	})
 
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, "OK")
+	})
+
 	addr := ":" + port
 
 	log.Printf("backend listening on %s", addr)

@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 func main() {
@@ -34,6 +35,13 @@ func main() {
 		{URL: url2},
 		{URL: url3},
 	}
+
+	healthChecker := balancer.NewHealthChecker(
+		servers,
+		2*time.Second,
+	)
+
+	go healthChecker.Start()
 
 	selector := balancer.NewRoundRobin()
 

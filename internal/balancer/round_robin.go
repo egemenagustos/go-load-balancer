@@ -20,11 +20,17 @@ func (r *RoundRobin) Next(servers []*Server) *Server {
 		return nil
 	}
 
-	index := r.current % len(servers)
+	for range servers {
+		index := r.current % len(servers)
 
-	server := servers[index]
+		server := servers[index]
 
-	r.current++
+		r.current++
 
-	return server
+		if server.IsHealthy() {
+			return server
+		}
+	}
+
+	return nil
 }
